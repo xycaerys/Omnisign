@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Language Webcam Test</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f6f7f9;
+        color: #15171a;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 24px 0 36px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: 0;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+        gap: 18px;
+        margin-top: 20px;
+        align-items: start;
+      }
+
+      .stage {
+        position: relative;
+        background: #101214;
+        border: 1px solid #d8dde3;
+        border-radius: 8px;
+        overflow: hidden;
+        aspect-ratio: 16 / 10;
+      }
+
+      video,
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scaleX(-1);
+      }
+
+      .panel {
+        background: #ffffff;
+        border: 1px solid #d8dde3;
+        border-radius: 8px;
+        padding: 16px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        background: #166534;
+        color: #ffffff;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #334155;
+      }
+
+      button:disabled {
+        background: #9aa4b2;
+        cursor: not-allowed;
+      }
+
+      dl {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 10px;
+        margin: 16px 0 0;
+      }
+
+      dt {
+        color: #4b5563;
+        font-weight: 700;
+      }
+
+      dd {
+        margin: 0;
+        word-break: break-word;
+      }
+
+      pre {
+        min-height: 120px;
+        max-height: 260px;
+        overflow: auto;
+        margin: 16px 0 0;
+        padding: 12px;
+        background: #111827;
+        color: #e5e7eb;
+        border-radius: 8px;
+        font-size: 13px;
+        white-space: pre-wrap;
+      }
+
+      .status {
+        margin-top: 12px;
+        color: #334155;
+      }
+
+      .error {
+        color: #b91c1c;
+      }
+
+      @media (max-width: 820px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Webcam Sign Test</h1>
+      <p>
+        Start the camera, hold one hand in view, and the page will send hand
+        landmarks to the backend.
+      </p>
+
+      <div class="controls">
+        <button id="startButton" type="button">Start Camera</button>
+        <button id="stopButton" class="secondary" type="button" disabled>Stop</button>
+      </div>
+
+      <section class="layout" aria-label="webcam test workspace">
+        <div class="stage">
+          <video id="video" autoplay muted playsinline></video>
+          <canvas id="overlay"></canvas>
+        </div>
+
+        <aside class="panel">
+          <p id="status" class="status">Camera is idle.</p>
+          <dl>
+            <dt>Word</dt>
+            <dd id="word">-</dd>
+            <dt>Confidence</dt>
+            <dd id="confidence">-</dd>
+            <dt>Smoothed</dt>
+            <dd id="smoothed">-</dd>
+            <dt>Intent</dt>
+            <dd id="intent">-</dd>
+            <dt>Landmarks</dt>
+            <dd id="landmarkCount">0</dd>
+          </dl>
+          <pre id="response">{}</pre>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module">
+      import {
+        FilesetResolver,
+        HandLandmarker
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("overlay");
+      const ctx = canvas.getContext("2d");
+      const startButton = document.getElementById("startButton");
+      const stopButton = document.getElementById("stopButton");
+      const statusEl = document.getElementById("status");
+      const responseEl = document.getElementById("response");
+      const wordEl = document.getElementById("word");
+      const confidenceEl = document.getElementById("confidence");
+      const smoothedEl = document.getElementById("smoothed");
+      const intentEl = document.getElementById("intent");
+      const landmarkCountEl = document.getElementById("landmarkCount");
+
+      let stream = null;
+      let handLandmarker = null;
+      let running = false;
+      let lastSentAt = 0;
+      let lastVideoTime = -1;
+
+      const setStatus = (message, isError = false) => {
+        statusEl.textContent = message;
+        statusEl.classList.toggle("error", isError);
+      };
+
+      const loadHandLandmarker = async () => {
+        if (handLandmarker) {
+          return handLandmarker;
+        }
+
+        setStatus("Loading hand landmark model...");
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+        );
+
+        handLandmarker = await HandLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+            delegate: "GPU"
+          },
+          runningMode: "VIDEO",
+          numHands: 1
+        });
+
+        return handLandmarker;
+      };
+
+      const resizeCanvas = () => {
+        const rect = canvas.getBoundingClientRect();
+        const width = Math.max(1, Math.floor(rect.width));
+        const height = Math.max(1, Math.floor(rect.height));
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+      };
+
+      const drawLandmarks = (landmarks) => {
+        resizeCanvas();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#22c55e";
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+
+        for (const point of landmarks) {
+          const x = (1 - point.x) * canvas.width;
+          const y = point.y * canvas.height;
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+      };
+
+      const sendKeypoints = async (landmarks) => {
+        const now = Date.now();
+        if (now - lastSentAt < 120) {
+          return;
+        }
+        lastSentAt = now;
+
+        const keypoints = landmarks.map((point) => [
+          Number(point.x.toFixed(5)),
+          Number(point.y.toFixed(5)),
+          Number((point.z || 0).toFixed(5))
+        ]);
+
+        try {
+          const response = await fetch("/sign-to-text", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              keypoints,
+              timestamp: now
+            })
+          });
+
+          const payload = await response.json();
+          responseEl.textContent = JSON.stringify(payload, null, 2);
+
+          if (!response.ok) {
+            setStatus(payload.detail || "Prediction request failed.", true);
+            return;
+          }
+
+          wordEl.textContent = payload.word;
+          confidenceEl.textContent = payload.confidence;
+          smoothedEl.textContent = payload.smoothed;
+          intentEl.textContent = payload.intent;
+          landmarkCountEl.textContent = keypoints.length;
+          setStatus("Streaming landmarks to /sign-to-text.");
+        } catch (error) {
+          setStatus(`Backend request failed: ${error.message}`, true);
+        }
+      };
+
+      const loop = async () => {
+        if (!running) {
+          return;
+        }
+
+        if (video.currentTime !== lastVideoTime) {
+          lastVideoTime = video.currentTime;
+          const result = handLandmarker.detectForVideo(video, performance.now());
+          const landmarks = result.landmarks && result.landmarks[0];
+
+          if (landmarks) {
+            drawLandmarks(landmarks);
+            await sendKeypoints(landmarks);
+          } else {
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            landmarkCountEl.textContent = "0";
+            setStatus("Camera is running. Hold one hand in view.");
+          }
+        }
+
+        requestAnimationFrame(loop);
+      };
+
+      const start = async () => {
+        try {
+          startButton.disabled = true;
+          await loadHandLandmarker();
+
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: "user"
+            },
+            audio: false
+          });
+
+          video.srcObject = stream;
+          await video.play();
+          running = true;
+          stopButton.disabled = false;
+          setStatus("Camera started. Looking for a hand...");
+          requestAnimationFrame(loop);
+        } catch (error) {
+          startButton.disabled = false;
+          stopButton.disabled = true;
+          setStatus(`Camera test failed: ${error.message}`, true);
+        }
+      };
+
+      const stop = () => {
+        running = false;
+        if (stream) {
+          for (const track of stream.getTracks()) {
+            track.stop();
+          }
+        }
+        stream = null;
+        video.srcObject = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        setStatus("Camera stopped.");
+      };
+
+      startButton.addEventListener("click", start);
+      stopButton.addEventListener("click", stop);
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        startButton.disabled = true;
+        setStatus("This browser does not expose webcam access.", true);
+      }
+    </script>
+  </body>
+</html>

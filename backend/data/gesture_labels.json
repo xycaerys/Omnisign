@@ -1,0 +1,58 @@
+{
+  "model_groups": [
+    "AEMNST",
+    "BDFIKRUVW",
+    "CO",
+    "GH",
+    "L",
+    "PQZ",
+    "X",
+    "YJ"
+  ],
+  "group_representatives": {
+    "AEMNST": ["A", "E", "M", "N", "S", "T"],
+    "BDFIKRUVW": ["B", "D", "F", "I", "K", "R", "U", "V", "W"],
+    "CO": ["C", "O"],
+    "GH": ["G", "H"],
+    "L": ["L"],
+    "PQZ": ["P", "Q", "Z"],
+    "X": ["X"],
+    "YJ": ["Y", "J"]
+  },
+  "fallback_signatures": {
+    "11111": "HELLO",
+    "01111": "HELP",
+    "01000": "DOCTOR",
+    "11000": "WATER",
+    "00000": "NO",
+    "01010": "YES",
+    "01100": "THANK",
+    "10100": "SORRY",
+    "10010": "FOOD",
+    "11100": "PLEASE",
+    "10001": "STOP",
+    "01001": "GOOD",
+    "00100": "BAD",
+    "11010": "MORE",
+    "10110": "BATHROOM",
+    "01110": "PAIN"
+  },
+  "fallback_words": [
+    "HELLO",
+    "HELP",
+    "WATER",
+    "DOCTOR",
+    "YES",
+    "NO",
+    "THANK",
+    "SORRY",
+    "FOOD",
+    "PLEASE",
+    "STOP",
+    "GOOD",
+    "BAD",
+    "MORE",
+    "BATHROOM",
+    "PAIN"
+  ]
+}

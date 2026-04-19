@@ -1,0 +1,77 @@
+{
+  "HELP": [
+    {"bone": "left_hand", "rotation": [0.0, 0.6, 0.2], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.2, 1.1, 0.4], "time": 0.1},
+    {"bone": "right_forearm", "rotation": [0.1, 0.4, 0.3], "time": 0.2}
+  ],
+  "HELLO": [
+    {"bone": "right_hand", "rotation": [0.0, 0.4, 0.8], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.0, 0.9, 0.5], "time": 0.15},
+    {"bone": "right_hand", "rotation": [0.0, 0.4, 0.8], "time": 0.3}
+  ],
+  "WATER": [
+    {"bone": "right_hand", "rotation": [0.3, 0.2, 0.1], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.5, 0.4, 0.2], "time": 0.12}
+  ],
+  "DOCTOR": [
+    {"bone": "left_forearm", "rotation": [0.4, 0.2, 0.0], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.6, 0.1, 0.3], "time": 0.12}
+  ],
+  "YES": [
+    {"bone": "head", "rotation": [0.3, 0.0, 0.0], "time": 0.0},
+    {"bone": "head", "rotation": [-0.2, 0.0, 0.0], "time": 0.15},
+    {"bone": "head", "rotation": [0.3, 0.0, 0.0], "time": 0.3}
+  ],
+  "NO": [
+    {"bone": "head", "rotation": [0.0, -0.4, 0.0], "time": 0.0},
+    {"bone": "head", "rotation": [0.0, 0.4, 0.0], "time": 0.15},
+    {"bone": "head", "rotation": [0.0, -0.4, 0.0], "time": 0.3}
+  ],
+  "THANK": [
+    {"bone": "right_hand", "rotation": [0.5, 0.3, 0.0], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.2, 0.6, 0.1], "time": 0.15},
+    {"bone": "right_forearm", "rotation": [0.1, 0.3, 0.0], "time": 0.25}
+  ],
+  "SORRY": [
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.3], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.2, 0.0, 0.6], "time": 0.15},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.3], "time": 0.3}
+  ],
+  "FOOD": [
+    {"bone": "right_hand", "rotation": [0.4, 0.1, 0.0], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.6, 0.3, 0.1], "time": 0.12},
+    {"bone": "right_hand", "rotation": [0.4, 0.1, 0.0], "time": 0.24}
+  ],
+  "STOP": [
+    {"bone": "right_hand", "rotation": [-0.5, 0.0, 0.0], "time": 0.0},
+    {"bone": "left_hand", "rotation": [0.5, 0.0, 0.0], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.0], "time": 0.2}
+  ],
+  "GOOD": [
+    {"bone": "right_hand", "rotation": [0.3, 0.5, 0.0], "time": 0.0},
+    {"bone": "right_forearm", "rotation": [0.1, 0.2, 0.0], "time": 0.15}
+  ],
+  "BAD": [
+    {"bone": "right_hand", "rotation": [0.0, -0.5, 0.3], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.0, -0.3, 0.6], "time": 0.15}
+  ],
+  "MORE": [
+    {"bone": "left_hand", "rotation": [0.2, 0.3, 0.0], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.2, -0.3, 0.0], "time": 0.0},
+    {"bone": "left_hand", "rotation": [0.0, 0.0, 0.0], "time": 0.2},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.0], "time": 0.2}
+  ],
+  "BATHROOM": [
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.5], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, -0.5], "time": 0.15},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.5], "time": 0.3}
+  ],
+  "PAIN": [
+    {"bone": "right_hand", "rotation": [0.3, 0.0, 0.2], "time": 0.0},
+    {"bone": "left_hand", "rotation": [-0.3, 0.0, -0.2], "time": 0.0},
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.0], "time": 0.2}
+  ],
+  "UNKNOWN": [
+    {"bone": "right_hand", "rotation": [0.0, 0.0, 0.0], "time": 0.0}
+  ]
+}

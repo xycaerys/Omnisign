@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stickman Sign Language Avatar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Stickman Sign Language System</h1>
+            <p>Real-time skeletal sequence visualization</p>
+        </header>
+        
+        <main>
+            <div class="canvas-container">
+                <canvas id="avatarCanvas" width="400" height="400"></canvas>
+                <div id="statusOverlay" class="status-overlay">READY</div>
+            </div>
+            
+            <div class="controls">
+                <div class="input-group">
+                    <input type="text" id="tokenInput" placeholder='e.g., "HELLO DOCTOR PAIN"' value="HELLO DOCTOR PAIN">
+                    <button id="playBtn">Play Sequence</button>
+                </div>
+                <div class="test-buttons">
+                    <button class="test-btn" data-word="HELLO">Hello</button>
+                    <button class="test-btn" data-word="HELP">Help</button>
+                    <button class="test-btn" data-word="WATER">Water</button>
+                    <button class="test-btn" data-word="DOCTOR">Doctor</button>
+                    <button class="test-btn" data-word="PAIN">Pain</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
