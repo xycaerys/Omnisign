@@ -17,7 +17,7 @@ const fadeBlurProps = {
   initial: { opacity: 0, filter: 'blur(12px)', y: 30 },
   whileInView: { opacity: 1, filter: 'blur(0px)', y: 0 },
   viewport: { once: true, margin: '-100px' },
-  transition: { duration: 0.8, ease: 'easeOut' },
+  transition: { duration: 0.8, ease: 'easeOut' as const },
 };
 
 const NAV_ITEMS = [
