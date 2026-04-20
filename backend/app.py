@@ -36,6 +36,11 @@ app.include_router(text_to_sign_router)
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 
+@app.get("/", tags=["root"])
+async def root() -> dict[str, str]:
+    return {"message": "OmniSign API is live and healthy!", "docs": "/docs"}
+
+
 @app.get("/health", tags=["health"])
 async def health() -> dict[str, str]:
     return {"status": "ok", "service": settings.app_name}
