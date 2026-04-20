@@ -131,6 +131,3 @@ Keyframes are applied as `mixamorig` bone transformations via Three.js at runtim
 
 ---
 
-## 📜 License
-
-MIT
