@@ -1,31 +1,33 @@
-# OmniSign
+# 🤟 OmniSign
+
+![OmniSign Banner](https://i.ibb.co/gMbJTBTh/Gemini-Generated-Image-u4b70su4b70su4b7.png)
 
 Real-time bidirectional sign language interpreter. Converts hand gestures to natural language and renders natural language as 3D avatar sign sequences.
 
 ---
 
-## What it does
+## ✨ What it does
 
-**Sign → Text** — Captures hand landmarks via webcam, classifies gestures into word tokens, and reconstructs grammatically coherent sentences using an NLP pipeline.
+**✋ Sign → Text** — Captures hand landmarks via webcam, classifies gestures into word tokens, and reconstructs grammatically coherent sentences using an NLP pipeline.
 
-**Text → Sign** — Parses natural language input, extracts intent tokens, and drives a rigged 3D humanoid avatar through a bone-level animation sequence.
+**💬 Text → Sign** — Parses natural language input, extracts intent tokens, and drives a rigged 3D humanoid avatar through a bone-level animation sequence.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js, React, Three.js, GLTFLoader |
-| Backend | FastAPI (Python) |
-| NLP | spaCy `en_core_web_sm` |
-| Computer Vision | MediaPipe, OpenCV |
-| Avatar | GLB / Mixamo rig, custom JSON animation engine |
-| Deployment | Vercel (frontend), Render (backend) |
+| 🎨 Frontend | Next.js, React, Three.js, GLTFLoader |
+| ⚙️ Backend | FastAPI (Python) |
+| 🧠 NLP | spaCy `en_core_web_sm` |
+| 👁️ Computer Vision | MediaPipe, OpenCV |
+| 🧍 Avatar | GLB / Mixamo rig, custom JSON animation engine |
+| ☁️ Deployment | Vercel (frontend), Render (backend) |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 OmniSign/
@@ -43,9 +45,9 @@ OmniSign/
 
 ---
 
-## Setup
+## ⚡ Setup
 
-### Backend
+### 🔹 Backend
 
 ```bash
 cd backend
@@ -55,7 +57,7 @@ uvicorn main:app --reload
 # → http://localhost:8000
 ```
 
-### Frontend
+### 🔹 Frontend
 
 ```bash
 cd frontend
@@ -64,7 +66,7 @@ npm run dev
 # → http://localhost:3000
 ```
 
-### Environment
+### 🔹 Environment
 
 ```
 NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
@@ -72,9 +74,9 @@ NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
 
 ---
 
-## API
+## 🔌 API
 
-### `POST /sign-to-text`
+### `POST /sign-to-text` ✋ → 💬
 
 ```json
 // Request
@@ -84,7 +86,7 @@ NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
 { "sentence": "Please help me. I need a doctor. I am in pain." }
 ```
 
-### `POST /text-to-sign`
+### `POST /text-to-sign` 💬 → ✋
 
 ```json
 // Request
@@ -96,7 +98,7 @@ NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
 
 ---
 
-## Animation Format
+## 🎬 Animation Format
 
 Each sign token maps to an animation file composed of bone keyframes:
 
@@ -112,23 +114,23 @@ Keyframes are applied as `mixamorig` bone transformations via Three.js at runtim
 
 ---
 
-## Deployment Notes
+## 🚀 Deployment Notes
 
-- **Render (backend):** Free tier has a cold start delay of 30–50 seconds after inactivity.
-- **Vercel (frontend):** Set framework to Next.js. Place all static assets including `avatar.glb` inside `/public`.
+- **🟣 Render (backend):** Free tier has a cold start delay of 30–50 seconds after inactivity.
+- **⚫ Vercel (frontend):** Set framework to Next.js. Place all static assets including `avatar.glb` inside `/public`.
 
 ---
 
-## Roadmap
+## 🔮 Roadmap
 
 - Sentence-level sign generation
-- Facial expression and non-manual marker support
-- ISL and multi-language expansion
-- Mobile deployment
-- Real-time voice output
+- 😊 Facial expression and non-manual marker support
+- 🌍 ISL and multi-language expansion
+- 📱 Mobile deployment
+- 🎙️ Real-time voice output
 
 ---
 
-## License
+## 📜 License
 
 MIT
