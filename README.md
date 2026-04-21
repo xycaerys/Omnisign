@@ -1,4 +1,4 @@
-# 🤟 OmniSign
+# 🤟 OMNI-SIGN
 
 ![OmniSign Banner](https://i.ibb.co/gMbJTBTh/Gemini-Generated-Image-u4b70su4b70su4b7.png)
 
